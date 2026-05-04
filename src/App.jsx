@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Auth from './sections/Auth';
 import HustleBot from './sections/HustleBot';
 import Planner from './sections/Planner';
 import Progress from './sections/Progress';
@@ -7,16 +8,18 @@ import Groups from './sections/Groups';
 import Mentors from './sections/Mentors';
 import Market from './sections/Market';
 import Profile from './sections/Profile';
+import Reels from './sections/Reels';
 
 const NAV = [
-  { id: 'bot', label: 'HustleBot', icon: '🤖' },
-  { id: 'progress', label: 'Progress', icon: '📊' },
-  { id: 'planner', label: 'Planner', icon: '📅' },
-  { id: 'network', label: 'Network', icon: '🔗' },
-  { id: 'groups', label: 'Groups', icon: '💬' },
-  { id: 'mentors', label: 'Mentors', icon: '🎓' },
-  { id: 'market', label: 'Market', icon: '🛍️' },
-  { id: 'profile', label: 'Profile', icon: '👤' },
+  { id: 'reels',    label: 'Hustle Feed', icon: '🎬' },
+  { id: 'bot',      label: 'HustleBot',   icon: '🤖' },
+  { id: 'progress', label: 'Progress',    icon: '📊' },
+  { id: 'planner',  label: 'Planner',     icon: '📅' },
+  { id: 'network',  label: 'Network',     icon: '🔗' },
+  { id: 'groups',   label: 'Groups',      icon: '💬' },
+  { id: 'mentors',  label: 'Mentors',     icon: '🎓' },
+  { id: 'market',   label: 'Market',      icon: '🛍️' },
+  { id: 'profile',  label: 'Profile',     icon: '👤' },
 ];
 
 const QUOTES = [
@@ -25,24 +28,31 @@ const QUOTES = [
   '"Stay focused. Stay dangerous."',
   '"The grind is the gift."',
   '"Every no gets you closer to the yes."',
+  '"Rich people have big libraries. Poor people have big TVs."',
+  '"Don\'t stop when you\'re tired. Stop when you\'re done."',
 ];
 
 export default function App() {
-  const [section, setSection] = useState('bot');
+  const [user, setUser] = useState(null);
+  const [section, setSection] = useState('reels');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const quote = QUOTES[Math.floor(Date.now() / 86400000) % QUOTES.length];
+
+  if (!user) return <Auth onLogin={setUser} />;
 
   const renderSection = () => {
     switch (section) {
-      case 'bot': return <HustleBot />;
-      case 'planner': return <Planner />;
+      case 'reels':    return <Reels />;
+      case 'bot':      return <HustleBot />;
+      case 'planner':  return <Planner />;
       case 'progress': return <Progress />;
-      case 'network': return <Network />;
-      case 'groups': return <Groups />;
-      case 'mentors': return <Mentors />;
-      case 'market': return <Market />;
-      case 'profile': return <Profile />;
-      default: return <HustleBot />;
+      case 'network':  return <Network />;
+      case 'groups':   return <Groups />;
+      case 'mentors':  return <Mentors />;
+      case 'market':   return <Market />;
+      case 'profile':  return <Profile />;
+      default:         return <Reels />;
     }
   };
 
@@ -50,19 +60,21 @@ export default function App() {
     <div className="app">
       {/* Mobile overlay */}
       {sidebarOpen && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.7)', zIndex: 99, backdropFilter: 'blur(4px)' }}
-          onClick={() => setSidebarOpen(false)} />
+        <div
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 99, backdropFilter: 'blur(6px)' }}
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
 
       {/* Sidebar */}
       <aside className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
         {/* Logo */}
         <div className="sidebar-logo">
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 32, letterSpacing: '0.1em', color: 'var(--gold)', lineHeight: 1 }}>HUSTLE</div>
-          <div style={{ fontSize: 9, color: 'var(--text-dim)', fontFamily: 'var(--font-mono)', letterSpacing: '0.25em', marginTop: 2 }}>YOUR EMPIRE STARTS HERE</div>
+          <div className="sidebar-wordmark">HUSTLE</div>
+          <div className="sidebar-tagline">Your Empire Starts Here</div>
         </div>
 
-        {/* Nav items */}
+        {/* Nav */}
         <nav className="sidebar-nav">
           {NAV.map(item => (
             <button
@@ -77,31 +89,31 @@ export default function App() {
           ))}
         </nav>
 
-        {/* User avatar */}
+        {/* User */}
         <div className="sidebar-user">
-          <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg, var(--gold), #F5A623)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 16, fontWeight: 800, color: '#000', flexShrink: 0 }}>
-            🔥
-          </div>
+          <div className="sidebar-avatar">🔥</div>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--text)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>Your Name</div>
-            <div style={{ fontSize: 10, color: 'var(--text-dim)', fontFamily: 'var(--font-mono)' }}>HUSTLER</div>
+            <div className="sidebar-user-name">{user.name}</div>
+            <div className="sidebar-user-tag">{user.niche ? user.niche.toUpperCase() : 'HUSTLER'}</div>
           </div>
+          <div
+            style={{ fontSize: 16, color: 'var(--text-dim)', cursor: 'pointer' }}
+            title="Log out"
+            onClick={() => setUser(null)}
+          >⎋</div>
         </div>
 
         {/* Quote */}
-        <div className="sidebar-quote">
-          <div style={{ fontSize: 10, color: 'var(--gold)', fontFamily: 'var(--font-mono)', letterSpacing: '0.1em', marginBottom: 6 }}>DAILY FUEL</div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', lineHeight: 1.6, fontStyle: 'italic' }}>{quote}</div>
-        </div>
+        <div className="sidebar-quote">{quote}</div>
       </aside>
 
-      {/* Main content */}
+      {/* Main */}
       <div className="main">
         {/* Mobile header */}
         <div className="mobile-header">
-          <button className="btn btn-ghost btn-sm" onClick={() => setSidebarOpen(true)} style={{ padding: '6px 10px' }}>☰</button>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 22, letterSpacing: '0.1em', color: 'var(--gold)' }}>HUSTLE</div>
-          <div style={{ width: 36 }} />
+          <button className="btn btn-ghost btn-sm" onClick={() => setSidebarOpen(true)} style={{ padding: '7px 11px', fontSize: 18 }}>☰</button>
+          <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, letterSpacing: '0.1em', color: 'var(--gold)' }}>HUSTLE</div>
+          <div style={{ width: 40 }} />
         </div>
 
         <div className="content">
