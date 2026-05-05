@@ -38,6 +38,7 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [section, setSection] = useState('reels');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [badges, setBadges] = useState({ groups: 28, network: 3, market: 5 });
 
   const quote = QUOTES[Math.floor(Date.now() / 86400000) % QUOTES.length];
 
@@ -59,7 +60,11 @@ export default function App() {
     }
   };
 
-  const navigate = (id) => { setSection(id); setSidebarOpen(false); };
+  const navigate = (id) => {
+    setSection(id);
+    setSidebarOpen(false);
+    if (badges[id]) setBadges(b => ({ ...b, [id]: 0 }));
+  };
 
   return (
     <div className="app">
@@ -85,7 +90,12 @@ export default function App() {
               className={`nav-item ${section === item.id ? 'active' : ''}`}
               onClick={() => navigate(item.id)}
             >
-              <span className="nav-icon">{item.icon}</span>
+              <span className="nav-icon" style={{ position:'relative' }}>
+                {item.icon}
+                {badges[item.id] > 0 && (
+                  <span className="nav-badge">{badges[item.id] > 99 ? '99+' : badges[item.id]}</span>
+                )}
+              </span>
               <span className="nav-label">{item.label}</span>
               {section === item.id && <div className="nav-indicator" />}
             </button>
@@ -126,7 +136,12 @@ export default function App() {
             className={`bottom-nav-btn ${section === item.id ? 'active' : ''}`}
             onClick={() => navigate(item.id)}
           >
-            <span className="bn-icon">{item.icon}</span>
+            <span className="bn-icon" style={{ position:'relative' }}>
+              {item.icon}
+              {badges[item.id] > 0 && (
+                <span className="nav-badge" style={{ top:-4, right:-6 }}>{badges[item.id] > 9 ? '9+' : badges[item.id]}</span>
+              )}
+            </span>
             <span className="bn-label">{item.label}</span>
           </button>
         ))}

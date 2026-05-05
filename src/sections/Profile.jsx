@@ -10,11 +10,11 @@ const BANNER_OPTIONS = [
 ];
 
 const INIT_ACHIEVEMENTS = [
-  { id: 1, emoji: '💰', title: 'First $1K Month', desc: 'Hit $1,000 in a single month', date: 'Mar 2026', unlocked: true, rarity: 'gold' },
-  { id: 2, emoji: '🤝', title: 'First Client', desc: 'Closed your first paying client', date: 'Feb 2026', unlocked: true, rarity: 'silver' },
-  { id: 3, emoji: '📱', title: '1K Followers', desc: 'Grew your social media to 1,000', date: 'Jan 2026', unlocked: true, rarity: 'silver' },
-  { id: 4, emoji: '🔥', title: '30-Day Streak', desc: 'Showed up 30 days in a row', date: 'Apr 2026', unlocked: true, rarity: 'gold' },
-  { id: 5, emoji: '🚀', title: 'First Launch', desc: 'Launched your first product or offer', date: 'Apr 2026', unlocked: true, rarity: 'gold' },
+  { id: 1, emoji: '💰', title: 'First $1K Month', desc: 'Hit $1,000 in a single month', date: '—', unlocked: false, rarity: 'gold' },
+  { id: 2, emoji: '🤝', title: 'First Client', desc: 'Closed your first paying client', date: '—', unlocked: false, rarity: 'silver' },
+  { id: 3, emoji: '📱', title: '1K Followers', desc: 'Grew your social media to 1,000', date: '—', unlocked: false, rarity: 'silver' },
+  { id: 4, emoji: '🔥', title: '30-Day Streak', desc: 'Showed up 30 days in a row', date: '—', unlocked: false, rarity: 'gold' },
+  { id: 5, emoji: '🚀', title: 'First Launch', desc: 'Launched your first product or offer', date: '—', unlocked: false, rarity: 'gold' },
   { id: 6, emoji: '👑', title: '$10K Month', desc: 'Hit $10,000 in a single month', date: '—', unlocked: false, rarity: 'diamond' },
   { id: 7, emoji: '🏆', title: 'Top Hustler', desc: 'Ranked in the top 100 on the platform', date: '—', unlocked: false, rarity: 'diamond' },
   { id: 8, emoji: '💎', title: 'Six Figures', desc: '$100K+ in total revenue', date: '—', unlocked: false, rarity: 'diamond' },
@@ -28,14 +28,7 @@ const RARITY_COLORS = {
 
 const NICHES = ['Dropshipping','SMMA','Amazon FBA','Clothing Brand','Real Estate','Content Creator','Photography','Food Business','Service Business','Day Trading','Freelancing','Other'];
 
-const PHOTOS = [
-  { id:1, img:'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=400&q=70', caption:'First $1K week 🔥' },
-  { id:2, img:'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=400&q=70', caption:'Analytics looking clean 📊' },
-  { id:3, img:'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&q=70', caption:'Closed a new client 🤝' },
-  { id:4, img:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&q=70', caption:'Deep work mode 💻' },
-  { id:5, img:'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&q=70', caption:'Product launch day 🚀' },
-  { id:6, img:'https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=400&q=70', caption:'Another bag secured 💰' },
-];
+const PHOTOS = [];
 
 export default function Profile() {
   const [editing, setEditing] = useState(false);
@@ -190,10 +183,10 @@ export default function Profile() {
           {/* Stats */}
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, flexShrink:0 }}>
             {[
-              { label:'Total Revenue', value:'$4,680', color:'var(--green)' },
-              { label:'Connections',   value:'24',     color:'var(--gold)' },
-              { label:'Streak',        value:'47d',    color:'var(--purple)' },
-              { label:'Badges',        value:`${unlocked.length}/${achievements.length}`, color:'var(--gold)' },
+              { label:'Total Revenue', value:'$0', color:'var(--green)' },
+              { label:'Connections',   value:'0',     color:'var(--gold)' },
+              { label:'Streak',        value:'0d',    color:'var(--purple)' },
+              { label:'Badges',        value:`0/${achievements.length}`, color:'var(--gold)' },
             ].map((s,i) => (
               <div key={i} style={{ padding:'12px 16px', background:'var(--bg-elevated)', borderRadius:10, border:'1px solid var(--border)', textAlign:'center', minWidth:90 }}>
                 <div style={{ fontFamily:'var(--font-display)', fontSize:20, color:s.color }}>{s.value}</div>
@@ -215,27 +208,33 @@ export default function Profile() {
       {tab === 'achievements' && (
         <div>
           <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:20 }}>
-            <div style={{ fontFamily:'var(--font-display)', fontSize:18, letterSpacing:'0.05em' }}>UNLOCKED <span style={{ color:'var(--gold)' }}>({unlocked.length})</span></div>
-            <div style={{ fontSize:12, color:'var(--text-dim)', fontFamily:'var(--font-mono)' }}>{locked.length} more to earn</div>
-          </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px,1fr))', gap:12, marginBottom:28 }}>
-            {unlocked.map(a => {
-              const r = RARITY_COLORS[a.rarity];
-              return (
-                <div key={a.id} style={{ padding:16, background:r.bg, borderRadius:12, border:`1px solid ${r.border}`, display:'flex', gap:12, alignItems:'flex-start', position:'relative', overflow:'hidden' }}>
-                  <div style={{ position:'absolute', top:8, right:10, fontSize:9, fontFamily:'var(--font-mono)', color:r.label, letterSpacing:'0.1em', opacity:0.7 }}>{a.rarity.toUpperCase()}</div>
-                  <div style={{ fontSize:28, flexShrink:0 }}>{a.emoji}</div>
-                  <div>
-                    <div style={{ fontWeight:700, fontSize:13, color:'var(--text)', marginBottom:3 }}>{a.title}</div>
-                    <div style={{ fontSize:11, color:'var(--text-muted)', lineHeight:1.4, marginBottom:6 }}>{a.desc}</div>
-                    <div style={{ fontSize:10, color:r.label, fontFamily:'var(--font-mono)' }}>EARNED {a.date}</div>
-                  </div>
-                </div>
-              );
-            })}
+            <div style={{ fontFamily:'var(--font-display)', fontSize:18, letterSpacing:'0.05em' }}>YOUR <span style={{ color:'var(--gold)' }}>BADGES</span></div>
+            <div style={{ fontSize:12, color:'var(--text-dim)', fontFamily:'var(--font-mono)' }}>{achievements.length} TO EARN</div>
           </div>
 
-          <div style={{ fontFamily:'var(--font-display)', fontSize:18, letterSpacing:'0.05em', color:'var(--text-dim)', marginBottom:12 }}>LOCKED ({locked.length})</div>
+          {unlocked.length > 0 && (
+            <>
+              <div style={{ fontFamily:'var(--font-display)', fontSize:14, letterSpacing:'0.05em', color:'var(--gold)', marginBottom:10 }}>UNLOCKED ({unlocked.length})</div>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px,1fr))', gap:12, marginBottom:24 }}>
+                {unlocked.map(a => {
+                  const r = RARITY_COLORS[a.rarity];
+                  return (
+                    <div key={a.id} style={{ padding:16, background:r.bg, borderRadius:12, border:`1px solid ${r.border}`, display:'flex', gap:12, alignItems:'flex-start', position:'relative', overflow:'hidden' }}>
+                      <div style={{ position:'absolute', top:8, right:10, fontSize:9, fontFamily:'var(--font-mono)', color:r.label, letterSpacing:'0.1em', opacity:0.7 }}>{a.rarity.toUpperCase()}</div>
+                      <div style={{ fontSize:28, flexShrink:0 }}>{a.emoji}</div>
+                      <div>
+                        <div style={{ fontWeight:700, fontSize:13, color:'var(--text)', marginBottom:3 }}>{a.title}</div>
+                        <div style={{ fontSize:11, color:'var(--text-muted)', lineHeight:1.4, marginBottom:6 }}>{a.desc}</div>
+                        <div style={{ fontSize:10, color:r.label, fontFamily:'var(--font-mono)' }}>EARNED {a.date}</div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </>
+          )}
+
+          <div style={{ fontFamily:'var(--font-display)', fontSize:14, letterSpacing:'0.05em', color:'var(--text-dim)', marginBottom:12 }}>LOCKED — KEEP GRINDING ({locked.length})</div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px,1fr))', gap:12 }}>
             {locked.map(a => (
               <div key={a.id} style={{ padding:16, background:'var(--bg-elevated)', borderRadius:12, border:'1px solid var(--border)', display:'flex', gap:12, alignItems:'flex-start', opacity:0.45 }}>
@@ -270,6 +269,14 @@ export default function Profile() {
             </div>
           )}
 
+          {photos.length === 0 && !addingPhoto && (
+            <div style={{ textAlign:'center', padding:'48px 20px', color:'var(--text-dim)', border:'1px dashed var(--border)', borderRadius:12 }}>
+              <div style={{ fontSize:36, marginBottom:10 }}>📸</div>
+              <div style={{ fontSize:15, fontWeight:600, color:'var(--text-muted)', marginBottom:6 }}>No posts yet</div>
+              <div style={{ fontSize:13, marginBottom:16 }}>Document your journey. Share your wins.</div>
+              <button className="btn btn-gold btn-sm" onClick={() => setAddingPhoto(true)}>+ Add Your First Post</button>
+            </div>
+          )}
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px,1fr))', gap:12 }}>
             {photos.map(p => (
               <div key={p.id} style={{ borderRadius:12, overflow:'hidden', border:'1px solid var(--border)', background:'var(--bg-elevated)', cursor:'pointer', transition:'transform 0.15s', }}
@@ -295,12 +302,12 @@ export default function Profile() {
           <div style={{ position:'relative', paddingLeft:32 }}>
             <div style={{ position:'absolute', left:10, top:0, bottom:0, width:2, background:'linear-gradient(180deg, var(--gold), transparent)' }} />
             {[
-              { date:'May 2026', event:'Joined HUSTLE platform', detail:'Started the journey. Everything begins here.', color:'var(--gold)', emoji:'⚡', locked:false },
-              { date:'Feb 2026', event:'Closed first paying client', detail:'First money hits different. The proof of concept moment.', color:'var(--green)', emoji:'🤝', locked:false },
-              { date:'Mar 2026', event:'Hit first $1K month', detail:'$1,080 earned. The momentum is real.', color:'var(--green)', emoji:'💰', locked:false },
-              { date:'Apr 2026', event:'Launched first product drop', detail:'37 units sold in 72 hours. The hustle is working.', color:'var(--gold)', emoji:'🚀', locked:false },
-              { date:'Apr 2026', event:'30-day posting streak', detail:'Consistency is the ultimate competitive advantage.', color:'var(--purple)', emoji:'🔥', locked:false },
-              { date:'Next Up', event:'Hit $10K/month', detail:'The goal is locked in. The work is being done.', color:'var(--text-dim)', emoji:'👑', locked:true },
+              { date:'Today', event:'Joined HUSTLE platform', detail:'The journey starts now. Every empire began with a single step.', color:'var(--gold)', emoji:'⚡', locked:false },
+              { date:'Coming', event:'Close your first client', detail:'Your first yes is the hardest — and the most important.', color:'var(--text-dim)', emoji:'🤝', locked:true },
+              { date:'Coming', event:'Hit your first $1K month', detail:'The first thousand proves the model works.', color:'var(--text-dim)', emoji:'💰', locked:true },
+              { date:'Coming', event:'Launch your first product', detail:'Execution beats perfection every time. Ship it.', color:'var(--text-dim)', emoji:'🚀', locked:true },
+              { date:'Coming', event:'30-day consistency streak', detail:'Consistency is the one skill that unlocks everything else.', color:'var(--text-dim)', emoji:'🔥', locked:true },
+              { date:'Coming', event:'Hit $10K/month', detail:'This is where it gets real. Keep moving.', color:'var(--text-dim)', emoji:'👑', locked:true },
             ].map((item, i) => (
               <div key={i} style={{ display:'flex', gap:16, marginBottom:20, position:'relative' }}>
                 <div style={{ position:'absolute', left:-26, width:22, height:22, borderRadius:'50%', background:item.locked ? 'var(--bg-elevated)' : item.color, border:`2px solid ${item.color}`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:10, flexShrink:0 }}>

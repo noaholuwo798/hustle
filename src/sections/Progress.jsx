@@ -1,22 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 
-const INIT_GOALS = [
-  { id:1, title:'First $1,000 Month', target:1000, current:680, category:'Revenue', emoji:'💰', deadline:'May 31' },
-  { id:2, title:'Get 10 Clients', target:10, current:4, category:'Growth', emoji:'🤝', deadline:'Jun 15' },
-  { id:3, title:'Launch Online Store', target:1, current:0, category:'Launch', emoji:'🚀', deadline:'Jun 1' },
-  { id:4, title:'Grow to 5K Followers', target:5000, current:1240, category:'Social', emoji:'📱', deadline:'Jul 1' },
-];
+const INIT_GOALS = [];
+const INIT_SALES = [];
 
-const INIT_SALES = [
-  { id:1, date:'May 3', item:'Custom hoodie drop', amount:150, status:'completed' },
-  { id:2, date:'May 3', item:'Coaching session', amount:200, status:'completed' },
-  { id:3, date:'May 2', item:'Product bundle', amount:75, status:'completed' },
-  { id:4, date:'May 2', item:'Website design', amount:800, status:'pending' },
-  { id:5, date:'May 1', item:'Social media management', amount:500, status:'completed' },
-];
-
-const MONTHS = ['Jan','Feb','Mar','Apr','May'];
-const REVENUE_DATA = [420, 680, 890, 1240, 1680];
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun'];
+const REVENUE_DATA = [0, 0, 0, 0, 0, 0];
 
 function useCountUp(target, duration = 1400) {
   const [count, setCount] = useState(0);
@@ -43,7 +31,7 @@ function AnimatedStat({ value, prefix = '', color }) {
 }
 
 function BarChart({ data, labels }) {
-  const max = Math.max(...data);
+  const max = Math.max(...data) || 1;
   return (
     <div style={{ display:'flex', gap:8, alignItems:'flex-end', height:120 }}>
       {data.map((val, i) => {
@@ -150,6 +138,13 @@ export default function Progress() {
             </div>
           )}
           <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+            {goals.length === 0 && (
+              <div style={{ textAlign:'center', padding:'32px 0', color:'var(--text-dim)' }}>
+                <div style={{ fontSize:32, marginBottom:8 }}>🎯</div>
+                <div style={{ fontSize:14, fontWeight:600, color:'var(--text-muted)' }}>No goals yet</div>
+                <div style={{ fontSize:12, marginTop:4 }}>Hit "+ Goal" to set your first target</div>
+              </div>
+            )}
             {goals.map(g => {
               const p = pct(g);
               return (
@@ -193,6 +188,13 @@ export default function Progress() {
             <button className="btn btn-gold btn-sm" onClick={addSale}>Log It 💰</button>
           </div>
         )}
+        {sales.length === 0 ? (
+          <div style={{ textAlign:'center', padding:'40px 0', color:'var(--text-dim)' }}>
+            <div style={{ fontSize:36, marginBottom:10 }}>💰</div>
+            <div style={{ fontSize:15, fontWeight:600, color:'var(--text-muted)', marginBottom:6 }}>No sales logged yet</div>
+            <div style={{ fontSize:13 }}>Hit "+ Log Sale" to record your first win</div>
+          </div>
+        ) : (
         <div style={{ overflowX:'auto' }}>
           <table style={{ width:'100%', borderCollapse:'collapse' }}>
             <thead>
@@ -210,6 +212,7 @@ export default function Progress() {
             </tbody>
           </table>
         </div>
+        )}
       </div>
     </div>
   );

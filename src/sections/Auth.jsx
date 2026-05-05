@@ -156,9 +156,6 @@ export default function Auth({ onLogin }) {
             ? <>No account? <span onClick={() => switchMode('signup')}>Create Account</span></>
             : <>Have an account? <span onClick={() => switchMode('login')}>Log In</span></>}
         </div>
-        <div className="auth-demo" onClick={() => onLogin({ name: 'Demo User', username: '@demo', niche: 'Dropshipping' })}>
-          Skip — enter as guest
-        </div>
       </div>
     </div>
   );

@@ -3,14 +3,6 @@ import { useState } from 'react';
 const DAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 
-const sample = {
-  '2026-05-05': [{ text: 'Client discovery call — 10am', color: 'gold' }, { text: 'Content batch day', color: 'green' }],
-  '2026-05-07': [{ text: 'Launch new product drop', color: 'red' }],
-  '2026-05-12': [{ text: 'Pay ads review', color: 'gold' }],
-  '2026-05-15': [{ text: 'Networking event — 6pm', color: 'green' }],
-  '2026-05-19': [{ text: 'Monthly revenue review', color: 'gold' }, { text: 'Team check-in', color: 'green' }],
-  '2026-05-26': [{ text: 'New mentor session', color: 'red' }],
-};
 
 const TASK_CATS = [
   { label: '📞 Sales Call', color: 'gold' },
@@ -33,7 +25,7 @@ export default function Planner() {
   const now = new Date();
   const [year, setYear] = useState(now.getFullYear());
   const [month, setMonth] = useState(now.getMonth());
-  const [events, setEvents] = useState(sample);
+  const [events, setEvents] = useState({});
   const [selected, setSelected] = useState(null);
   const [newTask, setNewTask] = useState('');
   const [taskColor, setTaskColor] = useState('gold');
