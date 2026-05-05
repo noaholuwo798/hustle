@@ -9,17 +9,19 @@ import Mentors from './sections/Mentors';
 import Market from './sections/Market';
 import Profile from './sections/Profile';
 import Reels from './sections/Reels';
+import Location from './sections/Location';
 
 const NAV = [
-  { id: 'reels',    label: 'Hustle Feed', icon: '🎬' },
-  { id: 'bot',      label: 'HustleBot',   icon: '🤖' },
-  { id: 'progress', label: 'Progress',    icon: '📊' },
-  { id: 'planner',  label: 'Planner',     icon: '📅' },
-  { id: 'network',  label: 'Network',     icon: '🔗' },
-  { id: 'groups',   label: 'Groups',      icon: '💬' },
-  { id: 'mentors',  label: 'Mentors',     icon: '🎓' },
-  { id: 'market',   label: 'Market',      icon: '🛍️' },
-  { id: 'profile',  label: 'Profile',     icon: '👤' },
+  { id: 'reels',    label: 'Feed',      icon: '🎬' },
+  { id: 'bot',      label: 'AI',        icon: '🤖' },
+  { id: 'progress', label: 'Progress',  icon: '📊' },
+  { id: 'planner',  label: 'Planner',   icon: '📅' },
+  { id: 'network',  label: 'Network',   icon: '🔗' },
+  { id: 'groups',   label: 'Groups',    icon: '💬' },
+  { id: 'mentors',  label: 'Mentors',   icon: '🎓' },
+  { id: 'market',   label: 'Market',    icon: '🛍️' },
+  { id: 'location', label: 'Map',       icon: '📍' },
+  { id: 'profile',  label: 'Profile',   icon: '👤' },
 ];
 
 const QUOTES = [
@@ -51,36 +53,37 @@ export default function App() {
       case 'groups':   return <Groups />;
       case 'mentors':  return <Mentors />;
       case 'market':   return <Market />;
+      case 'location': return <Location />;
       case 'profile':  return <Profile />;
       default:         return <Reels />;
     }
   };
+
+  const navigate = (id) => { setSection(id); setSidebarOpen(false); };
 
   return (
     <div className="app">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.75)', zIndex: 99, backdropFilter: 'blur(6px)' }}
+          style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.75)', zIndex:99, backdropFilter:'blur(6px)' }}
           onClick={() => setSidebarOpen(false)}
         />
       )}
 
-      {/* Sidebar */}
+      {/* Sidebar (desktop) */}
       <aside className={`sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
-        {/* Logo */}
         <div className="sidebar-logo">
           <div className="sidebar-wordmark">HUSTLE</div>
           <div className="sidebar-tagline">Your Empire Starts Here</div>
         </div>
 
-        {/* Nav */}
         <nav className="sidebar-nav">
           {NAV.map(item => (
             <button
               key={item.id}
               className={`nav-item ${section === item.id ? 'active' : ''}`}
-              onClick={() => { setSection(item.id); setSidebarOpen(false); }}
+              onClick={() => navigate(item.id)}
             >
               <span className="nav-icon">{item.icon}</span>
               <span className="nav-label">{item.label}</span>
@@ -89,21 +92,15 @@ export default function App() {
           ))}
         </nav>
 
-        {/* User */}
         <div className="sidebar-user">
           <div className="sidebar-avatar">🔥</div>
-          <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ flex:1, minWidth:0 }}>
             <div className="sidebar-user-name">{user.name}</div>
             <div className="sidebar-user-tag">{user.niche ? user.niche.toUpperCase() : 'HUSTLER'}</div>
           </div>
-          <div
-            style={{ fontSize: 16, color: 'var(--text-dim)', cursor: 'pointer' }}
-            title="Log out"
-            onClick={() => setUser(null)}
-          >⎋</div>
+          <div style={{ fontSize:16, color:'var(--text-dim)', cursor:'pointer' }} onClick={() => setUser(null)}>⎋</div>
         </div>
 
-        {/* Quote */}
         <div className="sidebar-quote">{quote}</div>
       </aside>
 
@@ -111,15 +108,29 @@ export default function App() {
       <div className="main">
         {/* Mobile header */}
         <div className="mobile-header">
-          <button className="btn btn-ghost btn-sm" onClick={() => setSidebarOpen(true)} style={{ padding: '7px 11px', fontSize: 18 }}>☰</button>
-          <div style={{ fontFamily: 'var(--font-display)', fontSize: 24, letterSpacing: '0.1em', color: 'var(--gold)' }}>HUSTLE</div>
-          <div style={{ width: 40 }} />
+          <button className="btn btn-ghost btn-sm" onClick={() => setSidebarOpen(true)} style={{ padding:'7px 11px', fontSize:18 }}>☰</button>
+          <div style={{ fontFamily:'var(--font-display)', fontSize:24, letterSpacing:'0.1em', color:'var(--gold)' }}>HUSTLE</div>
+          <div style={{ width:40 }} />
         </div>
 
         <div className="content">
           {renderSection()}
         </div>
       </div>
+
+      {/* Bottom nav (mobile only) */}
+      <nav className="bottom-nav">
+        {NAV.map(item => (
+          <button
+            key={item.id}
+            className={`bottom-nav-btn ${section === item.id ? 'active' : ''}`}
+            onClick={() => navigate(item.id)}
+          >
+            <span className="bn-icon">{item.icon}</span>
+            <span className="bn-label">{item.label}</span>
+          </button>
+        ))}
+      </nav>
     </div>
   );
 }
